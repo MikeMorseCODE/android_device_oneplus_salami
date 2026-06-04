@@ -25,7 +25,10 @@ PRODUCT_PACKAGES += \
     halium_fixup_mountpoints \
     halium_lxc_android_conf \
     halium_udev_rules \
-    halium_prop
+    halium_prop \
+    halium_usb_rndis_sh \
+    halium_usb_rndis_service \
+    halium_usb_rndis_network
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \

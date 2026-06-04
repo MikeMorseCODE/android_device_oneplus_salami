@@ -12,11 +12,18 @@ sh_binary {
     name: "halium_fixup_mountpoints",
     filename: "fixup-mountpoints",
     src: "fixup-mountpoints",
-    // relative_install_path relative to /system/bin/ → /system/etc/halium/
     relative_install_path: "../etc/halium",
 }
 
-// lxc-android.conf — LXC container config for the Android HAL layer.
+// usb-rndis.sh must also be executable.
+sh_binary {
+    name: "halium_usb_rndis_sh",
+    filename: "usb-rndis.sh",
+    src: "usb-rndis.sh",
+    relative_install_path: "../etc/halium",
+}
+
+// lxc-android.conf
 prebuilt_etc {
     name: "halium_lxc_android_conf",
     filename: "lxc-android.conf",
@@ -24,7 +31,7 @@ prebuilt_etc {
     sub_dir: "halium",
 }
 
-// udev rules — hardware node permissions for Droidian userspace.
+// udev rules
 prebuilt_etc {
     name: "halium_udev_rules",
     filename: "70-salami.rules",
@@ -32,10 +39,26 @@ prebuilt_etc {
     sub_dir: "halium",
 }
 
-// halium.prop — device properties sourced by halium-boot on the Droidian side.
+// halium.prop
 prebuilt_etc {
     name: "halium_prop",
     filename: "halium.prop",
     src: "halium.prop",
+    sub_dir: "halium",
+}
+
+// systemd unit for USB RNDIS gadget
+prebuilt_etc {
+    name: "halium_usb_rndis_service",
+    filename: "usb-rndis.service",
+    src: "usb-rndis.service",
+    sub_dir: "halium",
+}
+
+// systemd-networkd config for usb0 RNDIS interface
+prebuilt_etc {
+    name: "halium_usb_rndis_network",
+    filename: "usb-rndis.network",
+    src: "usb-rndis.network",
     sub_dir: "halium",
 }
