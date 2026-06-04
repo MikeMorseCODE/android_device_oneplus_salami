@@ -1,0 +1,165 @@
+# udev rules for OnePlus 11 (salami) — SM8550 (Snapdragon 8 Gen 2)
+# Installed to /lib/udev/rules.d/70-salami.rules on the Droidian rootfs
+# by halium-install.
+#
+# Group mapping (Droidian/Debian → Android equivalent):
+#   video    ← system/graphics  (display, GPU)
+#   render   ← system           (GPU render nodes)
+#   input    ← input            (touch, buttons, sensors)
+#   camera   ← camera           (camera, media)
+#   audio    ← audio            (ADSP, audio codec)
+#   dialout  ← radio            (modem, QMI, RIL)
+#   bluetooth ← bluetooth
+#   plugdev  ← usb
+
+# ---------------------------------------------------------------------------
+# GPU — Qualcomm KGSL (Adreno 740) and DRM
+# ---------------------------------------------------------------------------
+KERNEL=="kgsl",          OWNER="root", GROUP="video",  MODE="0660"
+KERNEL=="kgsl-3d0",      OWNER="root", GROUP="video",  MODE="0660"
+KERNEL=="kgsl-2d0",      OWNER="root", GROUP="video",  MODE="0660"
+KERNEL=="kgsl-2d1",      OWNER="root", GROUP="video",  MODE="0660"
+
+# DRM primary and render nodes
+SUBSYSTEM=="drm", KERNEL=="card*",     OWNER="root", GROUP="video",  MODE="0660"
+SUBSYSTEM=="drm", KERNEL=="renderD*",  OWNER="root", GROUP="render", MODE="0660"
+
+# ---------------------------------------------------------------------------
+# DMA-buf heaps (Android 12+ buffer allocator, replaces ION)
+# ---------------------------------------------------------------------------
+SUBSYSTEM=="dma_heap", OWNER="root", GROUP="video", MODE="0660"
+KERNEL=="ion",          OWNER="root", GROUP="video", MODE="0660"
+
+# ---------------------------------------------------------------------------
+# Input devices
+# ---------------------------------------------------------------------------
+SUBSYSTEM=="input", OWNER="root", GROUP="input", MODE="0660"
+
+# Uinput (for Android's virtual input injection)
+KERNEL=="uinput", OWNER="root", GROUP="input", MODE="0660"
+
+# ---------------------------------------------------------------------------
+# Video4Linux — camera sensors and codec
+# ---------------------------------------------------------------------------
+SUBSYSTEM=="video4linux", OWNER="root", GROUP="camera", MODE="0660"
+KERNEL=="video*",   OWNER="root", GROUP="camera", MODE="0660"
+KERNEL=="media*",   OWNER="root", GROUP="camera", MODE="0660"
+KERNEL=="v4l-subdev*", OWNER="root", GROUP="camera", MODE="0660"
+KERNEL=="cvp*",     OWNER="root", GROUP="camera", MODE="0660"
+
+# ---------------------------------------------------------------------------
+# Display ADSP / secure processor
+# ---------------------------------------------------------------------------
+KERNEL=="synx_device",   OWNER="root", GROUP="camera", MODE="0660"
+KERNEL=="gemini*",       OWNER="root", GROUP="camera", MODE="0660"
+KERNEL=="jpeg*",         OWNER="root", GROUP="camera", MODE="0660"
+KERNEL=="msm_vidc_reg",  OWNER="root", GROUP="audio",  MODE="0660"
+KERNEL=="msm_vidc_dec",  OWNER="root", GROUP="audio",  MODE="0660"
+KERNEL=="msm_vidc_enc",  OWNER="root", GROUP="audio",  MODE="0660"
+
+# ---------------------------------------------------------------------------
+# Audio DSP (ADSP RPC, LPASS)
+# ---------------------------------------------------------------------------
+KERNEL=="adsprpc-smd",        OWNER="root", GROUP="audio", MODE="0664"
+KERNEL=="adsprpc-smd-secure", OWNER="root", GROUP="audio", MODE="0644"
+KERNEL=="sdsprpc-smd",        OWNER="root", GROUP="audio", MODE="0660"
+KERNEL=="wcd_dsp0_control",   OWNER="root", GROUP="audio", MODE="0660"
+KERNEL=="audio_slimslave",    OWNER="root", GROUP="audio", MODE="0660"
+KERNEL=="msm_rtac",           OWNER="root", GROUP="audio", MODE="0660"
+KERNEL=="msm_audio_cal",      OWNER="root", GROUP="audio", MODE="0660"
+KERNEL=="msm_audio_ion*",     OWNER="root", GROUP="audio", MODE="0660"
+KERNEL=="avtimer",            OWNER="root", GROUP="audio", MODE="0660"
+KERNEL=="msm_fm",             OWNER="root", GROUP="audio", MODE="0660"
+
+# ---------------------------------------------------------------------------
+# Modem / RIL / QMI (ofono on the Droidian side uses these via libhybris)
+# ---------------------------------------------------------------------------
+KERNEL=="ipa",                OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="wwan_ioctl",         OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="ipa_odl_ctl",        OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="ipa_lnx_stats_ioctl",OWNER="root", GROUP="dialout", MODE="0640"
+KERNEL=="rmnet_ctrl",         OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="dpl_ctrl",           OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="diag",               OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="qmc_dma",            OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="qmc_cma",            OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="mhi_*_pipe_4",       OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="mhi_*_pipe_14",      OWNER="root", GROUP="dialout", MODE="0640"
+KERNEL=="mhi_*_pipe_16",      OWNER="root", GROUP="dialout", MODE="0640"
+KERNEL=="mhi_*_pipe_32",      OWNER="root", GROUP="dialout", MODE="0640"
+
+# Debug UART (ttyMSM0 = qupv3_se7_2uart = serial0 at 0xa9c000)
+KERNEL=="ttyMSM*",  OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="ttyGS*",   OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="ttyHS*",   OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="ttyHSL*",  OWNER="root", GROUP="dialout", MODE="0660"
+
+# ---------------------------------------------------------------------------
+# Bluetooth
+# ---------------------------------------------------------------------------
+KERNEL=="btpower",      OWNER="root", GROUP="bluetooth", MODE="0660"
+KERNEL=="btfmslim",     OWNER="root", GROUP="bluetooth", MODE="0660"
+KERNEL=="btfmcodec_dev",OWNER="root", GROUP="bluetooth", MODE="0660"
+KERNEL=="bt_cp_ctrl",   OWNER="root", GROUP="bluetooth", MODE="0660"
+KERNEL=="rfcomm*",      OWNER="root", GROUP="bluetooth", MODE="0660"
+
+# ---------------------------------------------------------------------------
+# NFC
+# ---------------------------------------------------------------------------
+KERNEL=="nfc-nci",  OWNER="root", GROUP="nfc", MODE="0660"
+KERNEL=="nq-nci",   OWNER="root", GROUP="nfc", MODE="0660"
+KERNEL=="st21nfc",  OWNER="root", GROUP="nfc", MODE="0660"
+KERNEL=="assd",     OWNER="root", GROUP="nfc", MODE="0660"
+
+# ---------------------------------------------------------------------------
+# Sensors (IIO devices — used by the multihal sensor HAL)
+# ---------------------------------------------------------------------------
+SUBSYSTEM=="iio", OWNER="root", GROUP="input", MODE="0664"
+KERNEL=="iio:device*", OWNER="root", GROUP="input", MODE="0664"
+KERNEL=="sensors", OWNER="root", GROUP="input", MODE="0660"
+
+# ---------------------------------------------------------------------------
+# Secure processor / TrustZone
+# ---------------------------------------------------------------------------
+KERNEL=="qseecom",         OWNER="root", GROUP="video",   MODE="0660"
+KERNEL=="smcinvoke",       OWNER="root", GROUP="video",   MODE="0660"
+KERNEL=="qce",             OWNER="root", GROUP="video",   MODE="0660"
+KERNEL=="spcom",           OWNER="root", GROUP="root",    MODE="0660"
+KERNEL=="spss_utils",      OWNER="root", GROUP="root",    MODE="0660"
+KERNEL=="sp_kernel",       OWNER="root", GROUP="root",    MODE="0660"
+KERNEL=="sp_keymaster",    OWNER="root", GROUP="root",    MODE="0660"
+
+# ---------------------------------------------------------------------------
+# Subsystem restart / remoteproc (ADSP, CDSP, MPSS, SLPI)
+# ---------------------------------------------------------------------------
+KERNEL=="subsys_*",     OWNER="root", GROUP="root", MODE="0640"
+KERNEL=="remoteproc*",  OWNER="root", GROUP="root", MODE="0640"
+
+# ---------------------------------------------------------------------------
+# Fingerprint
+# ---------------------------------------------------------------------------
+KERNEL=="qbt*",     OWNER="root", GROUP="input", MODE="0660"
+
+# ---------------------------------------------------------------------------
+# Vibrator / haptics
+# ---------------------------------------------------------------------------
+SUBSYSTEM=="leds", RUN+="/bin/chmod 0640 /sys/class/leds/%k/brightness"
+
+# ---------------------------------------------------------------------------
+# Power supply / battery (for upower)
+# ---------------------------------------------------------------------------
+SUBSYSTEM=="power_supply", OWNER="root", GROUP="root", MODE="0644"
+
+# ---------------------------------------------------------------------------
+# USB (for plugdev — SD card, USB OTG)
+# ---------------------------------------------------------------------------
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", OWNER="root", GROUP="plugdev", MODE="0664"
+
+# Ramdump (pstore already handled by kernel; these are extra dump nodes)
+KERNEL=="ramdump*", OWNER="root", GROUP="root", MODE="0640"
+
+# habanalabs shared memory (Qualcomm HAB)
+KERNEL=="hab", OWNER="root", GROUP="root", MODE="0666"
+
+# WLAN
+KERNEL=="wlan", OWNER="root", GROUP="root", MODE="0660"
