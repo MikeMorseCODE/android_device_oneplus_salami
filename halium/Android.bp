@@ -26,3 +26,13 @@ prebuilt_etc {
     // Installs to /system/etc/halium/lxc-android.conf
     // Copied by halium-install to /var/lib/lxc/android/config.
 }
+
+// udev rules for Droidian hardware access.
+prebuilt_etc {
+    name: "halium_udev_rules",
+    filename: "70-salami.rules",
+    src: "70-salami.rules",
+    sub_dir: "halium",
+    // Installs to /system/etc/halium/70-salami.rules
+    // Copied by halium-install to /lib/udev/rules.d/70-salami.rules.
+}

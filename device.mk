@@ -23,7 +23,8 @@ TARGET_SCREEN_WIDTH := 1080
 # Halium
 PRODUCT_PACKAGES += \
     halium_fixup_mountpoints \
-    halium_lxc_android_conf
+    halium_lxc_android_conf \
+    halium_udev_rules
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
