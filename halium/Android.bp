@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 // Halium/Droidian device-adaptation files for OnePlus 11 (salami).
-// Installed to /system/etc/halium/ and consumed by halium-install
-// when setting up the Droidian rootfs.
+// All files are installed to /system/etc/halium/ and consumed by
+// halium-install when setting up the Droidian rootfs.
 //
 
 // fixup-mountpoints must be executable (+x); sh_binary installs as 755.
@@ -12,27 +12,30 @@ sh_binary {
     name: "halium_fixup_mountpoints",
     filename: "fixup-mountpoints",
     src: "fixup-mountpoints",
-    // relative_install_path is relative to /system/bin/, so ../etc/halium
-    // resolves to /system/etc/halium/fixup-mountpoints.
+    // relative_install_path relative to /system/bin/ → /system/etc/halium/
     relative_install_path: "../etc/halium",
 }
 
-// lxc-android.conf is a plain config; prebuilt_etc (644) is fine.
+// lxc-android.conf — LXC container config for the Android HAL layer.
 prebuilt_etc {
     name: "halium_lxc_android_conf",
     filename: "lxc-android.conf",
     src: "lxc-android.conf",
     sub_dir: "halium",
-    // Installs to /system/etc/halium/lxc-android.conf
-    // Copied by halium-install to /var/lib/lxc/android/config.
 }
 
-// udev rules for Droidian hardware access.
+// udev rules — hardware node permissions for Droidian userspace.
 prebuilt_etc {
     name: "halium_udev_rules",
     filename: "70-salami.rules",
     src: "70-salami.rules",
     sub_dir: "halium",
-    // Installs to /system/etc/halium/70-salami.rules
-    // Copied by halium-install to /lib/udev/rules.d/70-salami.rules.
+}
+
+// halium.prop — device properties sourced by halium-boot on the Droidian side.
+prebuilt_etc {
+    name: "halium_prop",
+    filename: "halium.prop",
+    src: "halium.prop",
+    sub_dir: "halium",
 }
