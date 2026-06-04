@@ -1,0 +1,58 @@
+# PulseAudio startup script for Droidian on OnePlus 11 (salami)
+# Installed to /etc/pulse/droid.pa by halium-install.
+# Sourced from /etc/pulse/default.pa via:  .include /etc/pulse/droid.pa
+#
+# Uses pulseaudio-module-droid (from droid-hal/hybris) to open Android's
+# AudioFlinger HAL so the full Qualcomm AGM/PAL audio tuning is available
+# on Droidian — speaker EQ, call audio routing, BT SCO, etc.
+#
+# Prerequisites (installed by halium-install or the Droidian package):
+#   pulseaudio-module-droid
+#   pulseaudio-module-droid-glue  (or libdroid-util)
+
+# Unload the generic ALSA sink/source if loaded — we use the droid sink.
+unload-module module-alsa-sink   2>/dev/null || true
+unload-module module-alsa-source 2>/dev/null || true
+unload-module module-udev-detect 2>/dev/null || true
+
+# Load the droid audio HAL bridge.
+# primary_module: loads the 'primary' Android audio HAL (speaker/earpiece/mic)
+# voice_call_routing: route in-call audio through Android RIL audio path
+load-module module-droid-card \
+    rate=48000 \
+    audio_cal_wait=2 \
+    voice_call_routing=true
+
+# Speaker output sink (maps to Android OUTPUT_DEVICE_SPEAKER)
+load-module module-droid-sink \
+    sink_name=droid_output_speaker \
+    module=primary \
+    output_devices=AUDIO_DEVICE_OUT_SPEAKER
+
+# Earpiece output sink (maps to Android OUTPUT_DEVICE_EARPIECE — in-call)
+load-module module-droid-sink \
+    sink_name=droid_output_earpiece \
+    module=primary \
+    output_devices=AUDIO_DEVICE_OUT_EARPIECE
+
+# Headset sink (wired 3.5mm / USB-C adapter)
+load-module module-droid-sink \
+    sink_name=droid_output_headset \
+    module=primary \
+    output_devices=AUDIO_DEVICE_OUT_WIRED_HEADSET|AUDIO_DEVICE_OUT_WIRED_HEADPHONE
+
+# Built-in microphone source
+load-module module-droid-source \
+    source_name=droid_input_mic \
+    module=primary \
+    input_devices=AUDIO_DEVICE_IN_BUILTIN_MIC
+
+# Headset microphone source
+load-module module-droid-source \
+    source_name=droid_input_headset_mic \
+    module=primary \
+    input_devices=AUDIO_DEVICE_IN_WIRED_HEADSET
+
+# Set speaker as the default sink
+set-default-sink droid_output_speaker
+set-default-source droid_input_mic

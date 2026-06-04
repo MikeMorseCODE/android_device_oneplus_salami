@@ -23,6 +23,7 @@ TARGET_SCREEN_WIDTH := 1080
 # Halium
 PRODUCT_PACKAGES += \
     halium_fixup_mountpoints \
+    halium_flash_all \
     halium_lxc_android_conf \
     halium_udev_rules \
     halium_prop \
@@ -31,7 +32,11 @@ PRODUCT_PACKAGES += \
     halium_usb_rndis_network \
     halium_ofono_ril_subscription \
     halium_ofono_phonesim \
-    halium_ofono_conf
+    halium_ofono_conf \
+    halium_phoc_ini \
+    halium_pulse_droid_pa \
+    halium_nm_ofono_conf \
+    halium_nm_connectivity_conf
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
