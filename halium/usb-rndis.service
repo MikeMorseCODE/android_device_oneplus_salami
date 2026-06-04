@@ -1,0 +1,17 @@
+[Unit]
+Description=USB RNDIS gadget (Droidian first-boot debug access)
+Documentation=https://github.com/MikeMorseCODE/android_device_oneplus_salami
+DefaultDependencies=no
+After=sys-kernel-config.mount local-fs.target
+Before=network.target
+ConditionPathExists=/sys/kernel/config
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/usb-rndis.sh
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

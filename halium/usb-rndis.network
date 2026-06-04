@@ -1,0 +1,23 @@
+# systemd-networkd configuration for the RNDIS USB gadget interface
+# Assigns 192.168.2.15/24 to usb0 so the host can reach the device at
+# that address immediately after USB connect.
+#
+# Host-side setup (Linux):
+#   ip addr add 192.168.2.1/24 dev <usb-iface>
+#   ssh droidian@192.168.2.15
+#
+# Host-side setup (macOS/Windows):
+#   Set the RNDIS adapter to manual IP 192.168.2.1 / mask 255.255.255.0
+#
+# Installed to /etc/systemd/network/20-usb-rndis.network by halium-install.
+
+[Match]
+Name=usb0
+Driver=rndis_host g_ether
+
+[Network]
+Address=192.168.2.15/24
+ConfigureWithoutCarrier=yes
+
+[Link]
+RequiredForOnline=no
