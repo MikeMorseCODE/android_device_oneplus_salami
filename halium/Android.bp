@@ -27,86 +27,26 @@ sh_binary {
     relative_install_path: "../etc/halium",
 }
 
-prebuilt_etc {
-    name: "halium_lxc_android_conf",
-    filename: "lxc-android.conf",
-    src: "lxc-android.conf",
-    sub_dir: "halium",
+sh_binary {
+    name: "halium_install_hook",
+    filename: "halium-install-salami.sh",
+    src: "halium-install-salami.sh",
+    relative_install_path: "../etc/halium",
 }
 
-prebuilt_etc {
-    name: "halium_udev_rules",
-    filename: "70-salami.rules",
-    src: "70-salami.rules",
-    sub_dir: "halium",
-}
-
-prebuilt_etc {
-    name: "halium_prop",
-    filename: "halium.prop",
-    src: "halium.prop",
-    sub_dir: "halium",
-}
-
-prebuilt_etc {
-    name: "halium_usb_rndis_service",
-    filename: "usb-rndis.service",
-    src: "usb-rndis.service",
-    sub_dir: "halium",
-}
-
-prebuilt_etc {
-    name: "halium_usb_rndis_network",
-    filename: "usb-rndis.network",
-    src: "usb-rndis.network",
-    sub_dir: "halium",
-}
-
-prebuilt_etc {
-    name: "halium_ofono_ril_subscription",
-    filename: "ril_subscription.conf",
-    src: "ril_subscription.conf",
-    sub_dir: "halium",
-}
-
-prebuilt_etc {
-    name: "halium_ofono_phonesim",
-    filename: "phonesim.conf",
-    src: "phonesim.conf",
-    sub_dir: "halium",
-}
-
-prebuilt_etc {
-    name: "halium_ofono_conf",
-    filename: "ofono.conf",
-    src: "ofono.conf",
-    sub_dir: "halium",
-}
-
-prebuilt_etc {
-    name: "halium_phoc_ini",
-    filename: "phoc.ini",
-    src: "phoc.ini",
-    sub_dir: "halium",
-}
-
-prebuilt_etc {
-    name: "halium_pulse_droid_pa",
-    filename: "pulse-droid.pa",
-    src: "pulse-droid.pa",
-    sub_dir: "halium",
-}
-
-prebuilt_etc {
-    name: "halium_nm_ofono_conf",
-    filename: "10-ofono.conf",
-    src: "10-ofono.conf",
-    sub_dir: "halium",
-}
-
-prebuilt_etc {
-    name: "halium_nm_connectivity_conf",
-    filename: "20-connectivity.conf",
-    src: "20-connectivity.conf",
-    sub_dir: "halium",
-}
+prebuilt_etc { name: "halium_lxc_android_conf",       filename: "lxc-android.conf",         src: "lxc-android.conf",         sub_dir: "halium" }
+prebuilt_etc { name: "halium_udev_rules",             filename: "70-salami.rules",           src: "70-salami.rules",           sub_dir: "halium" }
+prebuilt_etc { name: "halium_prop",                   filename: "halium.prop",               src: "halium.prop",               sub_dir: "halium" }
+prebuilt_etc { name: "halium_usb_rndis_service",      filename: "usb-rndis.service",         src: "usb-rndis.service",         sub_dir: "halium" }
+prebuilt_etc { name: "halium_usb_rndis_network",      filename: "usb-rndis.network",         src: "usb-rndis.network",         sub_dir: "halium" }
+prebuilt_etc { name: "halium_ofono_ril_subscription", filename: "ril_subscription.conf",     src: "ril_subscription.conf",     sub_dir: "halium" }
+prebuilt_etc { name: "halium_ofono_phonesim",         filename: "phonesim.conf",             src: "phonesim.conf",             sub_dir: "halium" }
+prebuilt_etc { name: "halium_ofono_conf",             filename: "ofono.conf",                src: "ofono.conf",                sub_dir: "halium" }
+prebuilt_etc { name: "halium_phoc_ini",               filename: "phoc.ini",                  src: "phoc.ini",                  sub_dir: "halium" }
+prebuilt_etc { name: "halium_pulse_droid_pa",         filename: "pulse-droid.pa",            src: "pulse-droid.pa",            sub_dir: "halium" }
+prebuilt_etc { name: "halium_nm_ofono_conf",          filename: "10-ofono.conf",             src: "10-ofono.conf",             sub_dir: "halium" }
+prebuilt_etc { name: "halium_nm_connectivity_conf",   filename: "20-connectivity.conf",      src: "20-connectivity.conf",      sub_dir: "halium" }
+prebuilt_etc { name: "halium_lxc_apparmor",           filename: "lxc-android-apparmor",     src: "lxc-android-apparmor",     sub_dir: "halium" }
+prebuilt_etc { name: "halium_bluetooth_conf",         filename: "bluetooth-main.conf",       src: "bluetooth-main.conf",       sub_dir: "halium" }
+prebuilt_etc { name: "halium_dconf_overrides",        filename: "dconf-droidian.ini",        src: "dconf-droidian.ini",        sub_dir: "halium" }
+prebuilt_etc { name: "halium_fprintd_conf",           filename: "fprintd-droid.conf",        src: "fprintd-droid.conf",        sub_dir: "halium" }

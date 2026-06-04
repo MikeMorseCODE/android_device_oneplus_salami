@@ -1,0 +1,67 @@
+# AppArmor profile for the Android HAL LXC container on Droidian.
+# Installed to /etc/apparmor.d/lxc/lxc-android by halium-install.
+#
+# This profile confines the Android container while granting it the
+# hardware access it needs for HAL operation. The Droidian rootfs
+# itself remains outside the container's write access.
+
+#include <tunables/global>
+
+profile lxc-android flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/lxc/container-base>
+
+  # Allow all capabilities the Android init and HAL daemons need
+  capability,
+
+  # Full network access (for RIL, WiFi HAL, IPA data path)
+  network,
+
+  # Mount/umount inside the container namespace
+  mount,
+  umount,
+  pivot_root,
+
+  # Signal and ptrace between container processes
+  signal (send, receive),
+  ptrace (read, trace) peer=lxc-android,
+
+  # Device access — Android ueventd manages all nodes under /dev
+  /dev/**             rwmkl,
+  /sys/**             rw,
+  /sys/fs/cgroup/**   rw,
+
+  # Proc access (Android reads many /proc entries for system info)
+  /proc/**            rw,
+  /proc/sys/kernel/dmesg_restrict rw,
+
+  # Android rootfs (read-only vendor/system)
+  /var/lib/lxc/android/rootfs/**  r,
+  /var/lib/lxc/android/rootfs/data/** rwl,
+
+  # Firmware and DSP blobs
+  /vendor/firmware_mnt/**  r,
+  /vendor/dsp/**           r,
+  /vendor/bt_firmware/**   r,
+
+  # Allow executing anything inside the container
+  /var/lib/lxc/android/rootfs/{,**}  ix,
+  /vendor/{,**}                      ix,
+  /system/{,**}                      ix,
+
+  # DBus socket (for HAL binder → Droidian bridge services)
+  unix (bind, listen, accept, connect, send, receive)
+      type=stream,
+  unix (bind, listen, accept, connect, send, receive)
+      type=seqpacket,
+
+  # Binder IPC device
+  /dev/binder      rw,
+  /dev/hwbinder    rw,
+  /dev/vndbinder   rw,
+
+  # Deny writing to the Droidian rootfs outside /data
+  deny /etc/**        w,
+  deny /home/**       w,
+  deny /usr/**        w,
+  deny /var/lib/lxc/android/rootfs/etc/** w,
+}
