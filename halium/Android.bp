@@ -1,0 +1,28 @@
+//
+// Copyright (C) 2024 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+// Halium/Droidian device-adaptation files for OnePlus 11 (salami).
+// These are installed to /system/etc/halium/ and consumed by the
+// Droidian installer (halium-install) when setting up the rootfs.
+//
+
+prebuilt_etc {
+    name: "halium_fixup_mountpoints",
+    filename: "fixup-mountpoints",
+    src: "fixup-mountpoints",
+    sub_dir: "halium",
+    // Installs to /system/etc/halium/fixup-mountpoints
+    // Called by halium-boot to resolve /dev/block/bootdevice paths
+    // to the real SM8550 UFS HCD paths (1d84000.ufshc).
+}
+
+prebuilt_etc {
+    name: "halium_lxc_android_conf",
+    filename: "lxc-android.conf",
+    src: "lxc-android.conf",
+    sub_dir: "halium",
+    // Installs to /system/etc/halium/lxc-android.conf
+    // Copied by halium-install to /var/lib/lxc/android/config
+    // on the Droidian rootfs.
+}
