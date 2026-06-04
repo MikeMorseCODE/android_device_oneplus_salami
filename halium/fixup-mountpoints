@@ -1,0 +1,22 @@
+#!/bin/bash
+# fixup-mountpoints: Translates Android fstab partition paths to real
+# kernel block device paths for Droidian/Halium on OnePlus 11 (salami).
+#
+# SM8550 UFS host controller lives at 1d84000.ufshc on the SoC bus.
+# Android's /dev/block/bootdevice is a symlink to that controller.
+# This script provides stable, absolute paths that survive early-boot
+# udev ordering races.
+
+ufs_base=/dev/block/platform/soc/1d84000.ufshc/by-name
+
+case "$1" in
+    /dev/block/bootdevice/by-name/*)
+        echo "${ufs_base}/${1##*/}"
+        ;;
+    /dev/block/by-name/*)
+        echo "${ufs_base}/${1##*/}"
+        ;;
+    *)
+        echo "$1"
+        ;;
+esac
