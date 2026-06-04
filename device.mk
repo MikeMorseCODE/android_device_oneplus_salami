@@ -28,7 +28,10 @@ PRODUCT_PACKAGES += \
     halium_prop \
     halium_usb_rndis_sh \
     halium_usb_rndis_service \
-    halium_usb_rndis_network
+    halium_usb_rndis_network \
+    halium_ofono_ril_subscription \
+    halium_ofono_phonesim \
+    halium_ofono_conf
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \

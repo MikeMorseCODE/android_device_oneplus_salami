@@ -3,11 +3,9 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 // Halium/Droidian device-adaptation files for OnePlus 11 (salami).
-// All files are installed to /system/etc/halium/ and consumed by
-// halium-install when setting up the Droidian rootfs.
+// All files installed to /system/etc/halium/; consumed by halium-install.
 //
 
-// fixup-mountpoints must be executable (+x); sh_binary installs as 755.
 sh_binary {
     name: "halium_fixup_mountpoints",
     filename: "fixup-mountpoints",
@@ -15,7 +13,6 @@ sh_binary {
     relative_install_path: "../etc/halium",
 }
 
-// usb-rndis.sh must also be executable.
 sh_binary {
     name: "halium_usb_rndis_sh",
     filename: "usb-rndis.sh",
@@ -23,7 +20,6 @@ sh_binary {
     relative_install_path: "../etc/halium",
 }
 
-// lxc-android.conf
 prebuilt_etc {
     name: "halium_lxc_android_conf",
     filename: "lxc-android.conf",
@@ -31,7 +27,6 @@ prebuilt_etc {
     sub_dir: "halium",
 }
 
-// udev rules
 prebuilt_etc {
     name: "halium_udev_rules",
     filename: "70-salami.rules",
@@ -39,7 +34,6 @@ prebuilt_etc {
     sub_dir: "halium",
 }
 
-// halium.prop
 prebuilt_etc {
     name: "halium_prop",
     filename: "halium.prop",
@@ -47,7 +41,6 @@ prebuilt_etc {
     sub_dir: "halium",
 }
 
-// systemd unit for USB RNDIS gadget
 prebuilt_etc {
     name: "halium_usb_rndis_service",
     filename: "usb-rndis.service",
@@ -55,10 +48,30 @@ prebuilt_etc {
     sub_dir: "halium",
 }
 
-// systemd-networkd config for usb0 RNDIS interface
 prebuilt_etc {
     name: "halium_usb_rndis_network",
     filename: "usb-rndis.network",
     src: "usb-rndis.network",
+    sub_dir: "halium",
+}
+
+prebuilt_etc {
+    name: "halium_ofono_ril_subscription",
+    filename: "ril_subscription.conf",
+    src: "ril_subscription.conf",
+    sub_dir: "halium",
+}
+
+prebuilt_etc {
+    name: "halium_ofono_phonesim",
+    filename: "phonesim.conf",
+    src: "phonesim.conf",
+    sub_dir: "halium",
+}
+
+prebuilt_etc {
+    name: "halium_ofono_conf",
+    filename: "ofono.conf",
+    src: "ofono.conf",
     sub_dir: "halium",
 }
