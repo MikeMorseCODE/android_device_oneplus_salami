@@ -1,0 +1,64 @@
+# Halium/Droidian device properties for OnePlus 11 (salami)
+# Installed to /system/etc/halium/halium.prop by the Android build.
+# halium-install copies this to /etc/halium.prop on the Droidian rootfs
+# where it is sourced by halium-boot before the container starts.
+
+# ---------------------------------------------------------------------------
+# Device identification
+# ---------------------------------------------------------------------------
+ro.halium.device=salami
+ro.halium.codename=salami
+ro.halium.version=12
+ro.halium.platform=kalama
+ro.halium.chipname=SM8550
+
+# ---------------------------------------------------------------------------
+# Display geometry — OnePlus 11: 6.7in 1080x2376 AMOLED 120Hz
+# Phoc reads display geometry directly from the DRM connector; these props
+# are used by hybris and by Android HALs running in the LXC container.
+# Physical PPI ≈ 389; we use 450 (common rounding-up for high-density AMOLED)
+# to keep UI elements a comfortable size on the small screen.
+# ---------------------------------------------------------------------------
+ro.sf.lcd_density=450
+ro.hybris.lcd_density=450
+ro.hybris.display.width=1080
+ro.hybris.display.height=2376
+ro.hybris.display.max_refresh_rate=120
+
+# ---------------------------------------------------------------------------
+# Hybris HAL module hints
+# Droidian's libhybris uses these to dlopen the correct HAL .so files
+# from the Android vendor partition.
+# ---------------------------------------------------------------------------
+ro.hybris.vendor.gralloc=gralloc.default
+ro.hybris.vendor.hwcomposer=hwcomposer.default
+
+# Adreno 740 EGL/Vulkan — must match vendor.prop so hybris and Phoc
+# both agree on which EGL implementation to load.
+ro.hardware.egl=adreno
+ro.hardware.vulkan=adreno
+ro.opengles.version=196610
+
+# ---------------------------------------------------------------------------
+# Android container boot flag
+# Set to 0 here (compile-time default).
+# init.halium.rc sets ro.boot.container=1 at runtime inside the container.
+# ---------------------------------------------------------------------------
+ro.boot.container=0
+
+# ---------------------------------------------------------------------------
+# ADB inside the Android container — useful for hybris debugging
+# Connect with: adb connect <device-ip>:5555
+# ---------------------------------------------------------------------------
+persist.service.adb.enable=1
+persist.adb.tcp.port=5555
+
+# ---------------------------------------------------------------------------
+# Sensor multihal
+# ---------------------------------------------------------------------------
+ro.vendor.sensors.dynamic_sensor_hal_enabled=true
+
+# ---------------------------------------------------------------------------
+# Droidian timezone seed (overridden by timed/timedated at runtime)
+# ---------------------------------------------------------------------------
+persist.sys.timezone=UTC

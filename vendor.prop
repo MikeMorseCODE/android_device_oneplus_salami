@@ -7,3 +7,27 @@ ro.surface_flinger.set_touch_timer_ms=300
 
 # USB
 vendor.usb.product_string=OnePlus 11 5G
+
+# ---------------------------------------------------------------------------
+# Halium / Droidian — Android container side
+# These are baked into the vendor partition and visible to the Android
+# init and HAL processes running inside the LXC container.
+# ---------------------------------------------------------------------------
+
+# Display density: matches halium.prop so gralloc buffer sizes are consistent
+ro.sf.lcd_density=450
+
+# Confirm to Android HALs that they are running inside Halium
+# (value is 0 at build time; init.halium.rc raises it to 1 at runtime)
+ro.halium.version=12
+ro.halium.device=salami
+
+# Keep ADB alive inside the container so hybris issues can be diagnosed
+# via 'adb connect' from the Droidian side
+persist.service.adb.enable=1
+persist.adb.tcp.port=5555
+
+# Do not let Android's SurfaceFlinger try to own the display —
+# Phoc/Weston owns the DRM node; SF is stopped by init.halium.rc anyway,
+# but this prevents SF from grabbing the CRTC before the stop fires.
+ro.surface_flinger.running_without_sync_framework=true
